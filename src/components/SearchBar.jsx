@@ -75,7 +75,7 @@ const SearchBar = () => {
         {/* Search Button */}
         <button
           type="submit"
-          className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-green-700 to-green-500 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+          className="w-full sm:w-auto px-8 py-3 bg-linear-to-r from-green-700 to-green-500 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
         >
           <svg
             className="w-5 h-5"
