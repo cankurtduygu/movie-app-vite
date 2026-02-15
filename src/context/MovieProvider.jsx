@@ -7,6 +7,7 @@ export const MovieContext = createContext();
 const MovieProvider = ( {children} ) => {
 
     const [movies, setMovies] = useState([]);
+    const [user, setUser] = useState(null);
 
     const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
     const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
