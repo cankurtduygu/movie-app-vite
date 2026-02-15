@@ -1,8 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import bgImage from "../assets/bg-signUp.jpg";
+import { useState } from "react";
 
 const SignUp = () => {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    // const [username, setUsername] = useState("");
+
+    const handleSubmitSignUp = (e) => {
+        e.preventDefault();
+        // Handle sign-up logic here
+        setEmail("");
+        setPassword("");
+        console.log({ email, password });
+        // setUsername("");
+    };
+
   return (
     <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 "
          style={{ backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -13,8 +28,9 @@ const SignUp = () => {
             Sign up to save favorites and build your watchlist.
           </p>
 
-          <form className="mt-8 space-y-5">
-            <div>
+          <form className="mt-8 space-y-5"
+                onSubmit={handleSubmitSignUp}>
+            {/* <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Username
               </label>
@@ -24,8 +40,9 @@ const SignUp = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
                            focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-400
                            transition"
+                onChange={(e) => setUsername(e.target.value)}
               />
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -37,6 +54,7 @@ const SignUp = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
                            focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-400
                            transition"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -50,6 +68,7 @@ const SignUp = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
                            focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-400
                            transition"
+                onChange={(e) => setPassword(e.target.value)}
               />
               <p className="text-xs text-gray-500 mt-2">
                 Use at least 6 characters.
