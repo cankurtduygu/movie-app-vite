@@ -28,6 +28,15 @@ const MovieProvider = ( {children} ) => {
       fetchMovies();
 
     }, [])
+
+    const searchMovies = async (query) => {
+      try {
+        const res = await axios.get(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`);
+        setMovies(res.data.results);
+      } catch (error) {
+        console.error("Error searching movies:", error);
+      }
+    };
     
 
 
@@ -36,7 +45,7 @@ const MovieProvider = ( {children} ) => {
 
   return (
     <div>
-        <MovieContext.Provider value={{movies, setMovies}}>{children}</MovieContext.Provider>
+        <MovieContext.Provider value={{movies, setMovies, searchMovies}}>{children}</MovieContext.Provider>
     </div>
   )
 }

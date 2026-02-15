@@ -1,12 +1,17 @@
 import React, { useContext } from 'react';
 import { MovieContext } from '../context/MovieProvider';
+import { useNavigate } from 'react-router-dom';
 
 const MovieCard = ({ movie }) => {
   // console.log(movie);
 
+  const navigation = useNavigate();
+
   return (
     
-      <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group transform hover:scale-105">
+      <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group transform hover:scale-105 cursor-pointer"
+          onClick={()=> navigation(`/movie/${movie.id}`, { state:{movie}})}
+      >
         <div className="relative">
           <img
             src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
