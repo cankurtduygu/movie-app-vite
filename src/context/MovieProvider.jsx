@@ -3,8 +3,9 @@ import { onAuthStateChanged } from 'firebase/auth/cordova';
 import { useEffect, useState } from 'react';
 import { createContext } from 'react';
 import { auth } from '../auth/firebase';
-import { toast } from "react-toastify";
-
+import { toast } from 'react-toastify';
+import { db } from '../auth/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export const MovieContext = createContext();
 
@@ -13,13 +14,39 @@ const MovieProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [favorites, setFavorites] = useState([]);
 
+  console.log(user);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
+      // login olduysa favorileri Firestore'dan çek
+      const fetchFavorites = async () => {
+        if (!currentUser) {
+          setFavorites([]);
+          return;
+        }
+
+        try {
+          // users/{uid}/favorites
+          const favRef = collection(db, 'users', currentUser.uid, 'favorites');
+          const snap = await getDocs(favRef);
+
+          const favList = snap.docs.map((doc) => doc.data());
+          setFavorites(favList);
+        } catch (err) {
+          console.error('Error fetching favorites:', err);
+          setFavorites([]);
+        }
+      };
+
+      fetchFavorites();
     });
 
     return () => unsubscribe();
   }, []);
+
+  console.log(favorites)
 
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
   const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
@@ -51,26 +78,34 @@ const MovieProvider = ({ children }) => {
   };
 
   const addFavorite = (movie) => {
-  if (!user) {
-    toast.info("Please login to add favorites");
-    return;
-  }
+    if (!user) {
+      toast.info('Please login to add favorites');
+      return;
+    }
 
-  const isExist = favorites.find((item) => item.id === movie.id);
+    const isExist = favorites.find((item) => item.id === movie.id);
 
-  if (isExist) {
-    // çıkar
-    setFavorites(favorites.filter((item) => item.id !== movie.id));
-  } else {
-    // ekle
-    setFavorites([...favorites, movie]);
-  }
-};
-
+    if (isExist) {
+      // çıkar
+      setFavorites(favorites.filter((item) => item.id !== movie.id));
+    } else {
+      // ekle
+      setFavorites([...favorites, movie]);
+    }
+  };
 
   return (
     <div>
-      <MovieContext.Provider value={{ movies, setMovies, searchMovies, user, addFavorite, favorites  }}>
+      <MovieContext.Provider
+        value={{
+          movies,
+          setMovies,
+          searchMovies,
+          user,
+          addFavorite,
+          favorites,
+        }}
+      >
         {children}
       </MovieContext.Provider>
     </div>
