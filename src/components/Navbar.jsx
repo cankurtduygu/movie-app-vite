@@ -1,9 +1,22 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
-
+import { MovieContext } from '../context/MovieProvider';
+import { signOut } from 'firebase/auth';
+import { auth } from '../auth/firebase';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
+  const { user } = useContext(MovieContext);
 
+  const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    toast.success("Logged out");
+  } catch (err) {
+    toast.error(err.message);
+  }
+};
 
   return (
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border-b border-gray-700/50 shadow-2xl">
@@ -25,12 +38,21 @@ const Navbar = () => {
             Login
           </Link>
 
-          <Link
-            to="/signup"
-            className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-red-500/50 transform hover:scale-105 text-sm sm:text-base"
-          >
-            Sign Up
-          </Link>
+          {user ? (
+            <button
+              className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-red-500/50 transform hover:scale-105 text-sm sm:text-base"
+              onClick={handleLogout}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <Link
+              to="/signup"
+              className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-red-500/50 transform hover:scale-105 text-sm sm:text-base"
+            >
+              Sign Up
+            </Link>
+          )}
         </div>
       </div>
     </nav>
