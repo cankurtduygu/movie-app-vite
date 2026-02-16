@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { MovieContext } from "../context/MovieProvider";
 
 const Profile = () => {
-  const { user } = useContext(MovieContext);
+  const { user, favorites } = useContext(MovieContext);
+
+  console.log(favorites);
 
   const letter =
     user?.displayName?.charAt(0)?.toUpperCase() ||
@@ -43,9 +45,9 @@ const Profile = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
             <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <p className="text-sm text-gray-500">Favorites</p>
-              <p className="text-3xl font-bold text-gray-900 mt-2">0</p>
+              <p className="text-3xl font-bold text-gray-900 mt-2">{favorites.length}</p>
               <p className="text-sm text-gray-500 mt-2">
-                Movies you’ve saved
+                Movies you’ve saved 
               </p>
             </div>
 

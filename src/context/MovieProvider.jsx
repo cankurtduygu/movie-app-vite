@@ -5,7 +5,7 @@ import { createContext } from 'react';
 import { auth } from '../auth/firebase';
 import { toast } from 'react-toastify';
 import { db } from '../auth/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
 
 export const MovieContext = createContext();
 
@@ -46,6 +46,53 @@ const MovieProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+
+    const addFavorite = async (movie) => {
+  if (!user) {
+    toast.info("Please login to add favorites");
+    return;
+  }
+
+  const favRef = doc(
+    db,
+    "users",
+    user.uid,
+    "favorites",
+    movie.id.toString()
+  );
+
+  const isFavorite = favorites.some(
+    (item) => item.id === movie.id
+  );
+
+  try {
+    if (isFavorite) {
+      await deleteDoc(favRef);
+      setFavorites((prev) =>
+        prev.filter((item) => item.id !== movie.id)
+      );
+    } else {
+      await setDoc(favRef, {
+        id: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+      });
+
+      setFavorites((prev) => [
+        ...prev,
+        {
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+        },
+      ]);
+    }
+  } catch (err) {
+    console.error("Favorite error:", err);
+  }
+};
+
+
   console.log(favorites)
 
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -77,22 +124,7 @@ const MovieProvider = ({ children }) => {
     }
   };
 
-  const addFavorite = (movie) => {
-    if (!user) {
-      toast.info('Please login to add favorites');
-      return;
-    }
 
-    const isExist = favorites.find((item) => item.id === movie.id);
-
-    if (isExist) {
-      // çıkar
-      setFavorites(favorites.filter((item) => item.id !== movie.id));
-    } else {
-      // ekle
-      setFavorites([...favorites, movie]);
-    }
-  };
 
   return (
     <div>
