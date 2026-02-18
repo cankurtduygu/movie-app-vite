@@ -1,11 +1,15 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { MovieContext } from "../context/MovieProvider";
+import { AuthContext } from "../context/AuthProvider";
 
 const Profile = () => {
-  const { user, favorites } = useContext(MovieContext);
+  const { favorites } = useContext(MovieContext);
 
-  console.log(favorites);
+
+  const { user } = useContext(AuthContext);
+
+  // console.log(favorites);
 
   const letter =
     user?.displayName?.charAt(0)?.toUpperCase() ||

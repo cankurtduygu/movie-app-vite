@@ -1,20 +1,19 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBGXLNw6u5pn8sESh5KFkmr0qfaJ2Jh4Ew",
-  authDomain: "movie-app-da664.firebaseapp.com",
-  projectId: "movie-app-da664",
-  storageBucket: "movie-app-da664.firebasestorage.app",
-  messagingSenderId: "863904377006",
-  appId: "1:863904377006:web:df5fbd3229b16785f8a53f",
-  measurementId: "G-E70EHLPNPB"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 const app = initializeApp(firebaseConfig);
 
-
 export default app;
 
-export const auth= getAuth(app)
+export const auth = getAuth(app);
 export const db = getFirestore(app);

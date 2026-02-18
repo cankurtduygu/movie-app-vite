@@ -1,20 +1,13 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { MovieContext } from "../context/MovieProvider";
-import { signOut } from "firebase/auth";
-import { auth } from "../auth/firebase";
-import { toast } from "react-toastify";
+import { AuthContext } from "../context/AuthProvider";
+
 
 const Navbar = () => {
-  const { user } = useContext(MovieContext);
+  const { user, Logout } = useContext(AuthContext);
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      toast.success("Logged out");
-    } catch (err) {
-      toast.error(err.message);
-    }
+    Logout();
   };
 
   return (

@@ -10,8 +10,8 @@ import Profile from '../pages/Profile'
 
 const AppRouter = () => {
   return (
-    <BrowserRouter>
-        <div className='min-h-screen bg-gradient-to-br from-orange-50 via-white to-teal-50'>
+    <>
+        <div className='min-h-screen bg-linear-to-br from-orange-50 via-white to-teal-50'>
           <Navbar />
            <Routes>
               <Route path='/' element={<Home />} />
@@ -21,7 +21,7 @@ const AppRouter = () => {
               <Route path='/profile' element={<Profile />} />
            </Routes>
         </div>
-    </BrowserRouter>
+    </>
   )
 }
 

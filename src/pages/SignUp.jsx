@@ -2,13 +2,19 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bgImage from '../assets/bg-signUp.jpg';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '../auth/firebase';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthProvider';
+import { toast } from 'react-toastify';
+
+
 
 const SignUp = () => {
+
+
+  const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,33 +24,15 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      // 1 Kullanıcı oluştur
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,email,password
-      );
-
-      const user = userCredential.user;
-
-      // 2️ Username'i profile'a kaydet
-      await updateProfile(user, {
-        displayName: username,
-      });
-
-      // 3️ Form temizle
-      setEmail('');
-      setPassword('');
-      setUsername('');
-
-      // 4️ Toast
-      toast.success('Account created successfully!');
-
-      // 5️ Yönlendirme
+      await createUser(email, password, username);
       navigate('/');
     } catch (error) {
-      toast.error(error.message);
+      console.error(error);
     }
-  };
 
+  }
+
+   
   return (
     <div
       className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 "
@@ -110,7 +98,7 @@ const SignUp = () => {
             <button
               type="submit"
               className="w-full py-3 rounded-xl font-semibold text-white
-                         bg-gradient-to-r from-emerald-600 to-teal-500
+                         bg-linear-to-r from-emerald-600 to-teal-500
                          hover:from-emerald-700 hover:to-teal-600
                          shadow-lg hover:shadow-xl transition"
             >
