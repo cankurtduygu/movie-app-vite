@@ -1,23 +1,23 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
+import { AuthKontext } from "../context/AuthContext";
 
 
 const Navbar = () => {
-  const { user, Logout } = useContext(AuthContext);
+  const { user, Logout } = useContext(AuthKontext);
 
   const handleLogout = async () => {
     Logout();
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border-b border-gray-700/50 shadow-2xl">
+    <nav className="sticky top-0 z-50 bg-linear-to-r from-gray-900 via-gray-800 to-gray-900 backdrop-blur-xl border-b border-gray-700/50 shadow-2xl">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         
         {/* Logo */}
         <Link
           to="/"
-          className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent tracking-wider hover:scale-105 transition-transform duration-300"
+          className="text-3xl sm:text-4xl font-black bg-linear-to-r from-red-600 to-red-800 bg-clip-text text-transparent tracking-wider hover:scale-105 transition-transform duration-300"
         >
           CINEPLAX
         </Link>

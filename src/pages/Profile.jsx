@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { MovieContext } from "../context/MovieProvider";
-import { AuthContext } from "../context/AuthProvider";
+import { AuthKontext } from "../context/AuthContext";
 
 const Profile = () => {
   const { favorites } = useContext(MovieContext);
 
 
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthKontext);
 
   // console.log(favorites);
 

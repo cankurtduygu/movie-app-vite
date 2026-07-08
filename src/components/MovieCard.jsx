@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { MovieContext } from '../context/MovieProvider';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { AuthContext } from '../context/AuthProvider';
+import { AuthKontext } from '../context/AuthContext';
 
 const MovieCard = ({ movie }) => {
   const { addFavorite, favorites } = useContext(MovieContext);
 
-  const { user } = useContext(AuthContext); 
+  const { user } = useContext(AuthKontext); 
 
   const isFavorite = favorites.some((item) => item.id === movie.id);
 

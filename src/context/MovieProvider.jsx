@@ -9,13 +9,13 @@ import {
   doc,
   setDoc,
 } from 'firebase/firestore';
-import { AuthContext } from './AuthProvider';
+import { AuthKontext } from './AuthContext';
 import { db } from '../auth/firebase';
 
 export const MovieContext = createContext();
 
 const MovieProvider = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthKontext);
 
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -9,11 +9,10 @@ import {
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
+//context alani actik
+export const AuthKontext = createContext();
 
-
-export const AuthContext = createContext();
-
-const AuthProvider = ({ children }) => {
+const AuthContext = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const createUser = async (email, password, username) => {
+  const createUser = async (email, password, displayName) => {
     try {
       // 1 Kullanıcı oluştur
       const userCredential = await createUserWithEmailAndPassword(
@@ -33,11 +32,9 @@ const AuthProvider = ({ children }) => {
         password
       );
 
-      const user = userCredential.user;
-
-      // 2️ Username'i profile'a kaydet
-      await updateProfile(user, {
-        displayName: username,
+      // 2️ DisplayName'i profile'a kaydet
+      await updateProfile(userCredential.user, {
+        displayName: displayName,
       });
 
       //   // 3️ Form temizle
@@ -62,11 +59,12 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+
   return (
-    <AuthContext.Provider value={{ user, createUser, Logout }}>
+    <AuthKontext.Provider value={{ user, createUser, Logout }}>
       {children}
-    </AuthContext.Provider>
+    </AuthKontext.Provider>
   );
 };
 
-export default AuthProvider;
+export default AuthContext;

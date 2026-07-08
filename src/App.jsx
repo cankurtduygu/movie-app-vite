@@ -4,17 +4,17 @@ import AppRouter from './router/AppRouter';
 import MovieProvider from './context/MovieProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AuthProvider from './context/AuthProvider';
+import AuthContext from './context/AuthContext';
 
 function App() {
   return (
     <>
-      <AuthProvider>
+      <AuthContext>
         <MovieProvider>
           <AppRouter />
           <ToastContainer position="top-right" autoClose={2000} />
         </MovieProvider>
-      </AuthProvider>
+      </AuthContext>
     </>
   );
 }
