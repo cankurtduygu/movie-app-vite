@@ -1,33 +1,39 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import bgLogin from '../assets/bg-login.jpg';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { useContext, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../auth/firebase';
-import { useNavigate } from 'react-router-dom';
+import { AuthKontext } from '../context/AuthContext';
 
 const Login = () => {
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
+  const { signIn, signUpGoogle, forgotPassword } = useContext(AuthKontext);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLoginSubmit = async (e) => {
+  const from = location.state?.from || '/';
+
+  const redirectAfterLogin = () => {
+    navigate(from);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Burada Firebase Authentication ile giriş işlemi yapılacak
-    // Örneğin:
-    // signInWithEmailAndPassword(auth, loginEmail, loginPassword)
     try {
-      const isimisim = await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
-      toast.success('Login successful!');
-      navigate('/');
+      await signIn(email, password);
+      redirectAfterLogin();
     } catch (error) {
-      toast.error(error.message);
+      // toast AuthContext'te gösteriliyor
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signUpGoogle();
+      redirectAfterLogin();
+    } catch (error) {
+      // toast AuthContext'te gösteriliyor
     }
   };
 
@@ -41,13 +47,13 @@ const Login = () => {
       }}
     >
       <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-md border border-gray-200 shadow-xl rounded-3xl p-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-200 shadow-xl rounded-3xl p-5 sm:p-8">
           <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
           <p className="text-gray-500 mt-1 text-sm">
             Log in to manage your favorites and watchlist.
           </p>
 
-          <form className="mt-8 space-y-5" onSubmit={handleLoginSubmit}>
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Email
@@ -58,7 +64,7 @@ const Login = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
                            focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-400
                            transition"
-                onChange={(e) => setLoginEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -72,13 +78,14 @@ const Login = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
                            focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-400
                            transition"
-                onChange={(e) => setLoginPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div className="mt-2 flex items-center justify-between">
                 <span className="text-xs text-gray-500">
                   At least 6 characters
                 </span>
                 <button
+                  onClick={() => forgotPassword(email)}
                   type="button"
                   className="text-xs font-semibold text-emerald-700 hover:underline"
                 >
@@ -99,6 +106,7 @@ const Login = () => {
               </button>
 
               <button
+                onClick={handleGoogleLogin}
                 type="button"
                 className="w-full py-3 rounded-xl font-semibold text-gray-700
              bg-white border border-gray-300

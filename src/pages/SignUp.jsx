@@ -8,29 +8,20 @@ import { AuthKontext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
 const SignUp = () => {
-  const { createUser } = useContext(AuthKontext);
-  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  // const [username, setUsername] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const { createUser, signUpGoogle } = useContext(AuthKontext);
 
-  const handleSubmitSignUp = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
+    //database e firebase ile yolla
     const displayName = `${firstName} ${lastName}`;
 
-    // database e firebase ile yolla
-    try {
-      await createUser(email, password, displayName);
-      navigate('/');
-    } catch (error) {
-      toast.error('Failed to create account. Please try again.');
-    }
+    createUser(email, password, displayName);
   };
-  
 
   return (
     <div
@@ -42,13 +33,13 @@ const SignUp = () => {
       }}
     >
       <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-md border border-gray-200 shadow-xl rounded-3xl p-8">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-200 shadow-xl rounded-3xl p-5 sm:p-8">
           <h1 className="text-2xl font-bold text-gray-900">Create account</h1>
           <p className="text-gray-500 mt-1 text-sm">
             Sign up to save favorites and build your watchlist.
           </p>
 
-          <form className="mt-8 space-y-5" onSubmit={handleSubmitSignUp}>
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 First Name
@@ -119,6 +110,7 @@ const SignUp = () => {
                 Sign Up
               </button>
               <button
+                onClick={()=>signUpGoogle()}
                 type="button"
                 className="w-full py-3 rounded-xl font-semibold text-gray-700
              bg-white border border-gray-300

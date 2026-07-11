@@ -1,33 +1,33 @@
-import React, { useContext } from 'react'
-import MovieCard from '../components/MovieCard'
-import { MovieContext } from '../context/MovieProvider'
+import React, { useContext } from 'react';
+import MovieCard from '../components/MovieCard';
+import { MovieKontext } from '../context/MovieContext';
 import SearchBar from '../components/SearchBar';
 
 const Home = () => {
-
-
-  const { movies, loading } = useContext(MovieContext); 
-
-  // console.log(movies.length)
-
+  const { movies, loading } = useContext(MovieKontext);
 
   return (
-    <div>
-    <SearchBar />
-    <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
-      {loading ? (
-       <div
-            className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-blue-600 mt-52"
-            role="status"
-          >
-            <span className='visually-hidden'>Yükleniyor...</span>
+    <div className="pb-10">
+      <SearchBar />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {loading ? (
+          <div className="flex justify-center items-center min-h-[40vh]">
+            <div
+              className="animate-spin w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full"
+              role="status"
+              aria-label="Loading movies"
+            />
           </div>
-      ) : (
-        movies.map((movie) => <MovieCard movie={movie} key={movie.id} />)
-      )}
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mt-6 sm:mt-8">
+            {movies.map((movie) => (
+              <MovieCard movie={movie} key={movie.id} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-)
-}
+  );
+};
 
-export default Home
+export default Home;
