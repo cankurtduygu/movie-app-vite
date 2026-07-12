@@ -95,6 +95,7 @@ const AuthContext = ({ children }) => {
     try {
       await signInWithPopup(auth, provider);
       toastSuccess('With Google Logged in Successfully');
+      navigate('/');
     } catch (error) {
       toastError(error.message);
       throw error;
